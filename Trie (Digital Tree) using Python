@@ -1,0 +1,49 @@
+#Trie/Digital Tree
+#Trie is an efficient information reTrieval data structure. 
+#Using Trie, search complexities can be brought to optimal limit (key length).
+class TrieNode:
+    def __init__(self):
+        self.children = [None]*26
+        self.EOW = False
+class Trie:
+    def __init__(self):
+        self.root = self.getNode()
+    def getNode(self):
+        return TrieNode()
+    def _charToIndex(self,ch):        
+        return ord(ch)-ord('a') 
+    def insert(self,key):
+        Crawl = self.root
+        Length = len(key)
+        for level in range(Length):
+            index = self._charToIndex(key[level])
+            if not Crawl.children[index]:
+                Crawl.children[index] = self.getNode()
+            Crawl = Crawl.children[index]
+        Crawl.EOW = True
+    def search(self, key):
+        Crawl = self.root
+        Length = len(key)
+        for level in range(Length):
+            index = self._charToIndex(key[level])
+            if not Crawl.children[index]:
+                return False
+            Crawl = Crawl.children[index] 
+        return Crawl.EOW
+def main():
+    keys = ["the","a","there","anaswe","any","by","their"]
+    output = ["Not present in trie","Present in trie"]
+    t = Trie()
+    for key in keys:
+        t.insert(key)
+    print("{} ----> {}".format("the",output[t.search("the")]))
+    print("{} ----> {}".format("these",output[t.search("these")]))
+    print("{} ----> {}".format("their",output[t.search("their")]))
+    print("{} ----> {}".format("thaw",output[t.search("thaw")]))
+if __name__ == '__main__':
+    main()
+#Output-
+#the ---- Present in trie
+#these ---- Not present in trie
+#their ---- Present in trie
+#thaw ---- Not present in trie
